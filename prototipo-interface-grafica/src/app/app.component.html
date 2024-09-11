@@ -1,0 +1,32 @@
+<nav class="navbar navbar-dark" style="background-color: #6594e1;">
+  <div class="container-fluid">
+    <!-- Menu -->
+    <span class="navbar-brand mb-0 h1">Menu</span>
+
+    <!-- Centered text -->
+    <span class="navbar-text"><span style="background-color: red; width: 20px; height: 20px; border-radius: 50%; display: inline-block;"></span>
+    <span class="navbar-text">User Name</span></span>
+
+    <!-- User Info on the Right -->
+    <div class="d-flex align-items-center" style="color: white;">
+      Sales Report
+    </div>
+  </div>
+</nav>
+<div class="container">
+
+  <div class="select-container">
+      <label class="select-label" for="category-select">Categoria:</label>
+      <select id="category-select" (change)="preencherProdutos(categorySelect.value)"></select>
+
+      <label class="select-label" for="product-select">Produto:</label>
+      <select id="product-select" (change)="preencherMarcas(productSelect.value)"></select>
+
+      <label class="select-label" for="brand-select">Marca:</label>
+      <select id="brand-select" (change)="updateChart(brandSelect.value)"></select>
+  </div>
+  <p style="text-align: center; font-weight: bold;">Sales by month for:</p>
+  <div>
+      <canvas id="sales-chart"></canvas>
+  </div>
+</div>
