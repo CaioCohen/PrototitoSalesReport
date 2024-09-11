@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Gráfica de Categorias</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark" style="background-color: #6594e1;">
+        <div class="container-fluid">
+          <!-- Menu -->
+          <span class="navbar-brand mb-0 h1">Menu</span>
+    
+          <!-- Centered text -->
+          <span class="navbar-text"><span style="background-color: red; width: 20px; height: 20px; border-radius: 50%; display: inline-block;"></span>
+          <span class="navbar-text">User Name</span></span>
+    
+          <!-- User Info on the Right -->
+          <div class="d-flex align-items-center" style="color: white;">
+            Sales Report
+          </div>
+        </div>
+      </nav>
+    <div class="container">
+
+        <div class="select-container">
+            <label class="select-label" for="category-select">Categoria:</label>
+            <select id="category-select"></select>
+
+            <label class="select-label" for="product-select">Produto:</label>
+            <select id="product-select"></select>
+
+            <label class="select-label" for="brand-select">Marca:</label>
+            <select id="brand-select"></select>
+        </div>
+
+        <div>
+            <canvas id="sales-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="codes.js"></script>
+</body>
+
+</html>
