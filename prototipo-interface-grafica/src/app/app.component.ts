@@ -14,17 +14,11 @@ import { Dados } from './models/Dados';
 })
 export class AppComponent implements OnInit {
   public constructor() {
-    this.categorySelect = document.getElementById('category-select');
-    this.productSelect = document.getElementById('product-select');
-    this.brandSelect = document.getElementById('brand-select');
   }
-  categorySelect: any;
   categoria: string = "";
   produto: string = "";
   marca: string = "";
-  productSelect: any;
   chart: any;
-  brandSelect: any;
   title = 'prototipo-interface-grafica';
   data: Dados = new Dados();
   isLoading: boolean = false;
@@ -51,9 +45,6 @@ export class AppComponent implements OnInit {
         this.categoria = this.getKeys(this.data.categorias)[0];
         this.produto = this.getKeys(this.data.categorias[this.categoria].produtos)[0];
         this.marca = this.data.categorias[this.categoria].produtos[this.produto][0];
-
-        //this.preencherCategorias();
-        //this.preencherProdutos(Object.keys(this.data.categorias)[0]);
         this.isLoading = false;
         this.updateChart();
       })
@@ -75,21 +66,6 @@ export class AppComponent implements OnInit {
   selectMarca(){
     this.updateChart();
   }
-
-  // Preencher marcas com base no produto selecionado
-  preencherMarcas(product: any) {
-    this.brandSelect.innerHTML = '';
-    const selectedCategory = this.categorySelect.value;
-    const brands = this.data.categorias[selectedCategory]?.produtos[product] || [];
-    brands.forEach((brand: string) => {
-      const option = document.createElement('option');
-      option.value = brand;
-      option.textContent = brand;
-      this.brandSelect.appendChild(option);
-    });
-    this.updateChart();
-  }
-
 
   initializeChart() {
     const element = document.getElementById('sales-chart');
@@ -140,19 +116,6 @@ export class AppComponent implements OnInit {
   getKeys(obj: any): string[] {
     return Object.keys(obj);
   }
-
-// // Eventos para os selects
-// categorySelect.addEventListener('change', () => {
-//   preencherProdutos(categorySelect.value);
-// });
-
-// productSelect.addEventListener('change', () => {
-//   preencherMarcas(productSelect.value);
-// });
-
-// brandSelect.addEventListener('change', () => {
-//   updateChart(brandSelect.value);
-// });
 
 }
 
