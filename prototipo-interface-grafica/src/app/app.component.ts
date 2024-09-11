@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { RouterOutlet } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { Dados } from './models/Dados';
@@ -6,7 +8,7 @@ import { Dados } from './models/Dados';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,CommonModule,FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -17,6 +19,9 @@ export class AppComponent implements OnInit {
     this.brandSelect = document.getElementById('brand-select');
   }
   categorySelect: any;
+  categoria: string = "";
+  produto: string = "";
+  marca: string = "";
   productSelect: any;
   chart: any;
   brandSelect: any;
@@ -37,38 +42,38 @@ export class AppComponent implements OnInit {
 
   //Função que realiza uma chamada GET HTTP para simular uma chamada à API
   recuperarDados() {
+    this.isLoading = true;
     fetch('https://caiocohen.github.io/PrototitoSalesReport/data.json')
       .then(response => response.json())
       .then(dados => {
         this.data = dados;
         console.log(this.data);
-        this.preencherCategorias();
-        this.preencherProdutos(Object.keys(this.data.categorias)[0]);
+        this.categoria = this.getKeys(this.data.categorias)[0];
+        this.produto = this.getKeys(this.data.categorias[this.categoria].produtos)[0];
+        this.marca = this.data.categorias[this.categoria].produtos[this.produto][0];
+
+        //this.preencherCategorias();
+        //this.preencherProdutos(Object.keys(this.data.categorias)[0]);
+        this.isLoading = false;
+        this.updateChart();
       })
       .catch(error => console.error('Erro ao recuperar os dados:', error));
   }
 
-  // Preencher categorias
-  preencherCategorias() {
-    Object.keys(this.data?.categorias).forEach(category => {
-      const option = document.createElement('option');
-      option.value = category;
-      option.textContent = category;
-      this.categorySelect.appendChild(option);
-    });
+  selectCategoria(){
+    this.produto = this.getKeys(this.data.categorias[this.categoria].produtos)[0];
+    this.marca = this.data.categorias[this.categoria].produtos[this.produto][0];
+    this.updateChart();
   }
 
   // Preencher produtos com base na categoria selecionada
-  preencherProdutos(category: any) {
-    this.productSelect.innerHTML = '';
-    const products = this.data?.categorias[category]?.produtos || {};
-    Object.keys(products).forEach(product => {
-      const option = document.createElement('option');
-      option.value = product;
-      option.textContent = product;
-      this.productSelect.appendChild(option);
-    });
-    this.preencherMarcas(this.productSelect.value);
+  selectProduto(){
+    this.marca = this.data.categorias[this.categoria].produtos[this.produto][0];
+    this.updateChart();
+  }
+
+  selectMarca(){
+    this.updateChart();
   }
 
   // Preencher marcas com base no produto selecionado
@@ -82,7 +87,7 @@ export class AppComponent implements OnInit {
       option.textContent = brand;
       this.brandSelect.appendChild(option);
     });
-    this.updateChart(this.brandSelect.value);
+    this.updateChart();
   }
 
 
@@ -124,12 +129,16 @@ export class AppComponent implements OnInit {
   }
 
   // Atualizar gráfico de vendas
-  updateChart(brand: any) {
+  updateChart() {
     if (this.chart) {
-      const salesData = this.data.vendas[brand] || [];
+      const salesData = this.data.vendas[this.marca] || [];
       this.chart.data.datasets[0].data = salesData;
       this.chart.update();
     }
+  }
+
+  getKeys(obj: any): string[] {
+    return Object.keys(obj);
   }
 
 // // Eventos para os selects

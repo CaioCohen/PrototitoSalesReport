@@ -15,15 +15,22 @@
 </nav>
 <div class="container">
 
-  <div class="select-container">
+  <div class="select-container" *ngIf="!isLoading">
       <label class="select-label" for="category-select">Categoria:</label>
-      <select id="category-select" (change)="preencherProdutos(categorySelect.value)"></select>
+      <select id="category-select" [(ngModel)]="categoria" (change)="selectCategoria()">
+        <option *ngFor="let key of getKeys(data.categorias)">{{key}}</option>
+      </select>
 
       <label class="select-label" for="product-select">Produto:</label>
-      <select id="product-select" (change)="preencherMarcas(productSelect.value)"></select>
+      <select id="product-select" [(ngModel)]="produto" (change)="selectProduto()">
+        <option *ngFor="let key of getKeys(data.categorias[categoria].produtos)">{{key}}</option>
+
+      </select>
 
       <label class="select-label" for="brand-select">Marca:</label>
-      <select id="brand-select" (change)="updateChart(brandSelect.value)"></select>
+      <select id="brand-select" [(ngModel)]="marca" (change)="selectMarca()">
+        <option *ngFor="let item of data.categorias[categoria].produtos[produto]">{{item}}</option>
+      </select>
   </div>
   <p style="text-align: center; font-weight: bold;">Sales by month for:</p>
   <div>
